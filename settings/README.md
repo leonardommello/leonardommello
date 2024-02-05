@@ -1,6 +1,10 @@
 # My Personal Settings
 ## Windows
 
+### Install Apps necessary to configure the environment
+
+1. Run the script "install.ps1"
+
 ### How to Configure VSCode
 
 #### Using profile method
@@ -33,3 +37,5 @@
 2. Type "notepad $PROFILE"
 3. Copy the content of "settings\PowerShell\profile.ps1" to the file "Microsoft.PowerShell_profile.ps1"
 4. Save the file (Ctrl+S)
+
+## Linux
