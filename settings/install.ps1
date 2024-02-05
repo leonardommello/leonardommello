@@ -5,10 +5,6 @@ if (!$isAdmin) {
     exit
 }
 
-# if winget is not installed, install it
-if (!(Get-Command winget -ErrorAction SilentlyContinue)) {
-    Add-AppxPackage -RegisterByFamilyName -MainPackage Microsoft.DesktopAppInstaller_8wekyb3d8bbwe
-}
 
 function InstallPackages {
     # List of packages to install
@@ -46,4 +42,10 @@ function InstallPackages {
     }
 }
 
-InstallPackages
+# if winget is not installed, install it
+if (!(Get-Command winget -ErrorAction SilentlyContinue)) {
+    Add-AppxPackage -RegisterByFamilyName -MainPackage Microsoft.DesktopAppInstaller_8wekyb3d8bbwe
+    InstallPackages
+} else {
+    InstallPackages
+}
