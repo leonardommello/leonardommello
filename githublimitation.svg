@@ -18,7 +18,7 @@
             padding: 0;
             font-size: 2rem;
             font-family: 'Arial', sans-serif;
-            color: #f5f5f5;
+            color: #d5d5d5;
             text-align: left;
         }
     </style>
