@@ -30,7 +30,7 @@
             padding: 0;
             font-size: 2rem;
             font-family: 'Arial', sans-serif;
-            color: #FFFFFF;
+            color: #d5d5d5;
             text-align: left;
             animation: colorTransition 5s infinite;
         }
