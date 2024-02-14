@@ -12,7 +12,7 @@
 
 ## About me
 
-![Hello](githublimitation.svg)
+![Hello](/github_md_limitations/githublimitation.svg)
 
 I'm a DevOps and SRE enthusiast, with a passion for automation. I'm always looking for new challenges and opportunities to learn and grow.
 Gamer, fan of Dayz, Rust, and other survival games. /n
