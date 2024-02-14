@@ -1,13 +1,28 @@
 # Leonardo Medeiros de Mello Jr
 
-#### <center> DevOps & SRE | Automation | IaC | CI/CD | Monitoring | Cloud | Containers | Orchestration
+![DevOps](https://img.shields.io/badge/-DevOps-000000?style=for-the-badge&logo=devops&logoColor=white)
+![SRE](https://img.shields.io/badge/-SRE-000000?style=for-the-badge&logo=sre&logoColor=white)
+![Automation](https://img.shields.io/badge/-Automation-000000?style=for-the-badge&logo=automation&logoColor=white)
+![IaC](https://img.shields.io/badge/-IaC-000000?style=for-the-badge&logo=iac&logoColor=white)
+![CI/CD](https://img.shields.io/badge/-CI/CD-000000?style=for-the-badge&logo=cicd&logoColor=white)
+![Monitoring](https://img.shields.io/badge/-Monitoring-000000?style=for-the-badge&logo=monitoring&logoColor=white)
+![Cloud](https://img.shields.io/badge/-Cloud-000000?style=for-the-badge&logo=cloud&logoColor=white)
+![Containers](https://img.shields.io/badge/-Containers-000000?style=for-the-badge&logo=containers&logoColor=white)
+![Orchestration](https://img.shields.io/badge/-Orchestration-000000?style=for-the-badge&logo=orchestration&logoColor=white)
 
 ## About me
-<center>
+
+![Hello](githublimitation.svg)
+
 I'm a DevOps and SRE enthusiast, with a passion for automation. I'm always looking for new challenges and opportunities to learn and grow.
 Gamer, fan of Dayz, Rust, and other survival games. /n
 Love technology, and I'm always looking for new things to learn and improve my skills.
-</center>
+
+## Get in touch
+
+[![Linkedin](https://img.shields.io/badge/-Leonardo%20Medeiros%20de%20Mello%20Jr-00000?style=for-the-badge&logo=linkedin&logoColor=white&label=Linkedin&labelColor=1560BD&color=000000&link=https%3A%2F%2Fwww.linkedin.com%2Fin%2Fleonardommello%2F)](https://www.linkedin.com/in/leonardommello/)
+[![Instagram](https://img.shields.io/badge/-leonardommello-00000?style=for-the-badge&logo=instagram&logoColor=white&label=Instagram&labelColor=E4405F&color=000000&link=https%3A%2F%2Fwww.instagram.com%2Fleonardommello%2F)](https://www.instagram.com/leonardommello/)
+[![Twitch](https://img.shields.io/badge/-leonardommello-00000?style=for-the-badge&logo=twitch&logoColor=white&label=Twitch&labelColor=9146FF&color=000000&link=https%3A%2F%2Fwww.twitch.tv%2Fleonardomjr)](https://www.twitch.tv/leonardommjr)
 
 ## Skills
 
@@ -43,19 +58,13 @@ class Leonardo:
 
 <center>
 
-![Python](https://img.shields.io/badge/-Python-3776AB?style=flat-square&logo=python&logoColor=white)
-![Bash](https://img.shields.io/badge/-Bash-4EAA25?style=flat-square&logo=gnu-bash&logoColor=white)
-![Powershell](https://img.shields.io/badge/-Powershell-5391FE?style=flat-square&logo=powershell&logoColor=white)
-![Docker](https://img.shields.io/badge/-Docker-2496ED?style=flat-square&logo=docker&logoColor=white)
-![Kubernetes](https://img.shields.io/badge/-Kubernetes-326CE5?style=flat-square&logo=kubernetes&logoColor=white)
-![Terraform](https://img.shields.io/badge/-Terraform-623CE4?style=flat-square&logo=terraform&logoColor=white)
-![Git](https://img.shields.io/badge/-Git-F05032?style=flat-square&logo=git&logoColor=white)
-![TeamCity](https://img.shields.io/badge/-TeamCity-000000?style=flat-square&logo=teamcity&logoColor=white)
+![Python](https://img.shields.io/badge/-Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![Bash](https://img.shields.io/badge/-Bash-4EAA25?style=for-the-badge&logo=gnu-bash&logoColor=white)
+![Powershell](https://img.shields.io/badge/-Powershell-5391FE?style=for-the-badge&logo=powershell&logoColor=white)
+![Docker](https://img.shields.io/badge/-Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
+![Kubernetes](https://img.shields.io/badge/-Kubernetes-326CE5?style=for-the-badge&logo=kubernetes&logoColor=white)
+![Terraform](https://img.shields.io/badge/-Terraform-623CE4?style=for-the-badge&logo=terraform&logoColor=white)
+![Git](https://img.shields.io/badge/-Git-F05032?style=for-the-badge&logo=git&logoColor=white)
+![TeamCity](https://img.shields.io/badge/-TeamCity-000000?style=for-the-badge&logo=teamcity&logoColor=white)
 
 </center>
-
-## Get in touch
-
-- ![Linkedin](https://img.shields.io/badge/-Leonardo%20Medeiros%20de%20Mello%20Jr-0077B5?style=flat-square&logo=linkedin&logoColor=white&link=https://www.linkedin.com/in/leonardommello/)
-- ![Instagram](https://img.shields.io/badge/-@leonardommello-E4405F?style=flat-square&logo=instagram&logoColor=white&link=https://www.instagram.com/leonardommello/)
-- ![Twitch](https://img.shields.io/badge/-leonardommjr-9146FF?style=flat-square&logo=twitch&logoColor=white&link=https://www.twitch.tv/leonardommjr)
