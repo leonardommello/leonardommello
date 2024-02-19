@@ -29,6 +29,7 @@ defaults:
 jobs:
   # Build job
   build:
+    wor
     runs-on: ubuntu-latest
     env:
       HUGO_VERSION: 0.122.0
@@ -61,7 +62,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./public
+          path: ./src/portfolio/public
 
   # Deployment job
   deploy:
