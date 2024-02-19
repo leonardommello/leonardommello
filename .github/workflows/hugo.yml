@@ -29,7 +29,6 @@ defaults:
 jobs:
   # Build job
   build:
-    wor
     runs-on: ubuntu-latest
     env:
       HUGO_VERSION: 0.122.0
