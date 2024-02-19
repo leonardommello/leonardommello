@@ -12,7 +12,7 @@
 
 ## About me
 
-![Hello](/github_md_limitations/githublimitation.svg)
+![Hello](/.github_md_limitations/githublimitation.svg)
 
 I'm a DevOps and SRE enthusiast, with a passion for automation. I'm always looking for new challenges and opportunities to learn and grow.
 Gamer, fan of Dayz, Rust, and other survival games. /n
@@ -56,15 +56,18 @@ class Leonardo:
         return self.name, self.role, self.location, self.skills, self.knowledge, self.interests, self.languages
 ```
 
-<center>
 
-![Python](https://img.shields.io/badge/-Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
-![Bash](https://img.shields.io/badge/-Bash-4EAA25?style=for-the-badge&logo=gnu-bash&logoColor=white)
-![Powershell](https://img.shields.io/badge/-Powershell-5391FE?style=for-the-badge&logo=powershell&logoColor=white)
-![Docker](https://img.shields.io/badge/-Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
-![Kubernetes](https://img.shields.io/badge/-Kubernetes-326CE5?style=for-the-badge&logo=kubernetes&logoColor=white)
-![Terraform](https://img.shields.io/badge/-Terraform-623CE4?style=for-the-badge&logo=terraform&logoColor=white)
-![Git](https://img.shields.io/badge/-Git-F05032?style=for-the-badge&logo=git&logoColor=white)
-![TeamCity](https://img.shields.io/badge/-TeamCity-000000?style=for-the-badge&logo=teamcity&logoColor=white)
 
-</center>
+[![Python](https://img.shields.io/badge/-Python-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
+[![Bash](https://img.shields.io/badge/-Bash-4EAA25?style=for-the-badge&logo=gnu-bash&logoColor=white)](https://www.gnu.org/software/bash/)
+[![Powershell](https://img.shields.io/badge/-Powershell-5391FE?style=for-the-badge&logo=powershell&logoColor=white)](https://docs.microsoft.com/en-us/powershell/)
+[![Docker](https://img.shields.io/badge/-Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com/)
+[![Kubernetes](https://img.shields.io/badge/-Kubernetes-326CE5?style=for-the-badge&logo=kubernetes&logoColor=white)](https://kubernetes.io/)
+[![Terraform](https://img.shields.io/badge/-Terraform-623CE4?style=for-the-badge&logo=terraform&logoColor=white)](https://www.terraform.io/)
+[![Git](https://img.shields.io/badge/-Git-F05032?style=for-the-badge&logo=git&logoColor=white)](https://git-scm.com/)
+[![TeamCity](https://img.shields.io/badge/-TeamCity-000000?style=for-the-badge&logo=teamcity&logoColor=white)](https://www.jetbrains.com/teamcity/)
+[![Android](https://img.shields.io/badge/-Android-3DDC84?style=for-the-badge&logo=android&logoColor=white)](https://developer.android.com/)
+[![iOS](https://img.shields.io/badge/-iOS-000000?style=for-the-badge&logo=ios&logoColor=white)](https://developer.apple.com/ios/)
+[![iPadOS](https://img.shields.io/badge/-iPadOS-000000?style=for-the-badge&logo=ipados&logoColor=white)](https://developer.apple.com/ipados/)
+[![macOS](https://img.shields.io/badge/-macOS-000000?style=for-the-badge&logo=macos&logoColor=white)](https://developer.apple.com/macos/)
+
