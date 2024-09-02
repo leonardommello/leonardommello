@@ -1,28 +1,30 @@
-#Check if software as running with admin, if not, get admin rights
+# Checando se o script está rodando como administrador
+# EN: Checking if the script is running as an administrator
 $isAdmin = ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")
 if (!$isAdmin) {
     Start-Process powershell.exe "-NoProfile -ExecutionPolicy Bypass -File `"$PSCommandPath`"" -Verb RunAs
     exit
 }
 
+#Variables 
+home = $env:USERPROFILE
+scriptPath = $PSScriptRoot
+
+# Função que instala a lista de pacotes que eu uso no Windows
+# EN: Function that installs the list of packages I use on Windows
 function InstallPackages {
-    # List of packages to install
     $pkgList = @(
-        "Docker.DockerDesktop"
-        "GoLang.Go"
+        "Fork.Fork"
+        "Git.Git"
+        "GitHub.GitLFS"
+        "suse.RancherDesktop"
         "Microsoft.WindowsTerminal"
         "Microsoft.PowerShell"
         "Microsoft.PowerToys"
-        "Microsoft.VisualStudioCode.Insiders"
-        "Microsoft.VisualStudio.2022.Community"
-        "Google.Chrome"
+        "Microsoft.VisualStudioCode"
+        "TheBrowserCompany.Arc"
         "Foxit.FoxitReader"
         "7zip.7zip"
-        "Kitware.CMake"
-        "Fork.Fork"
-        "Git.Git"
-        "Python.Python.3.11"
-        "EclipseAdoptium.Temurin.17.JDK"
         "Canonical.Ubuntu.2204"
         "Microsoft.VCRedist.2013.x64"
         "Microsoft.VCRedist.2012.x64"
@@ -30,11 +32,13 @@ function InstallPackages {
         "Microsoft.VCRedist.2008.x64"
         "Microsoft.DotNet.Runtime.8"
         "JanDeDobbeleer.OhMyPosh"
-        "GitHub.GitLFS"
         "Amazon.AWSCLI"
         "KaiKramer.KeyStoreExplorer"
         "WinSCP.WinSCP"
         "Obsidian.Obsidian"
+        "Python.Launcher"
+        "GoLang.Go"
+        "EclipseAdoptium.Temurin.17.JDK"
     )
 
     foreach ($pkg in $pkgList) {
@@ -43,28 +47,82 @@ function InstallPackages {
     }
 }
 
-# if winget is not installed, install it
-if (!(Get-Command winget -ErrorAction SilentlyContinue)) {
-    $URL = "https://api.github.com/repos/microsoft/winget-cli/releases/latest"
-    $URL = (Invoke-WebRequest -Uri $URL).Content | ConvertFrom-Json |
-    Select-Object -ExpandProperty "assets" |
-    Where-Object "browser_download_url" -Match '.msixbundle' |
-    Select-Object -ExpandProperty "browser_download_url"
-    Invoke-WebRequest -Uri $URL -OutFile "Setup.msix" -UseBasicParsing
-    Add-AppxPackage -Path "Setup.msix"
-    Remove-Item "Setup.msix"
-    try {
-        winget --version
-        if ($?) {
-            InstallPackages
+# Função que aplica configuração do perfil do PowerShell e Terminal do Windows usando symbolic link após fazer checkout do repositório
+# EN: Function that applies PowerShell and Windows Terminal profile configuration using symbolic link after checking out the repository
+function ApplyConfig {
+    if (!(Test-Path "$env:USERPROFILE\Documents\PowerShell")) {
+        Remove-Item -Path "$env:USERPROFILE\Documents\PowerShell" -Recurse -Force
+    }
+    if (!(Test-Path "$env:USERPROFILE\AppData\Local\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json")) {
+        Remove-Item -Path "$env:USERPROFILE\AppData\Local\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json"
+    }
+    # Cria os links simbólicos
+    # EN: Creates symbolic links
+    New-Item -ItemType SymbolicLink -Path "$env:USERPROFILE\Documents\PowerShell" -Target "$PSScriptRoot\PowerShell"
+    New-Item -ItemType SymbolicLink -Path "$env:USERPROFILE\AppData\Local\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json" -Target "$PSScriptRoot\WindowsTerminal\settings.json"
+}
+
+
+# Função que instala o winget caso não esteja instalado
+# EN: Function that installs winget if it is not installed
+function WingetInstaller {
+    if (!(Get-Command winget -ErrorAction SilentlyContinue)) {
+        $URL = "https://api.github.com/repos/microsoft/winget-cli/releases/latest"
+        $URL = (Invoke-WebRequest -Uri $URL).Content | ConvertFrom-Json |
+        Select-Object -ExpandProperty "assets" |
+        Where-Object "browser_download_url" -Match '.msixbundle' |
+        Select-Object -ExpandProperty "browser_download_url"
+        Invoke-WebRequest -Uri $URL -OutFile "Setup.msix" -UseBasicParsing
+        Add-AppxPackage -Path "Setup.msix"
+        Remove-Item "Setup.msix"
+        try {
+            winget --version
+        }
+        catch {
+            Write-Host "Winget failed to install, please install it manually"
+            Write-Host "https://github.com/microsoft/winget-cli/releases/"
+            exit
         }
     }
-    catch {
-        Write-Host "Winget failed to install, please install it manually"
-        Write-Host "https://github.com/microsoft/winget-cli/releases/"
-        exit
+    else {
+        Write-Host "Winget is already installed"
     }
 }
-else {
-    InstallPackages
+
+function InstallingNerdFonts {
+    $URL = "https://api.github.com/repos/ryanoasis/nerd-fonts/releases/latest"
+    $URL = (Invoke-WebRequest -Uri $URL).Content | ConvertFrom-Json |
+    Select-Object -ExpandProperty "assets" |
+    Where-Object "browser_download_url" -Match '.zip' |
+    Select-Object -ExpandProperty "browser_download_url"
+    #Saving name of the file and url at for loop
+    ForEach ($font in $URL) {
+        $fileName = $font -split "/" | Select-Object -Last 1
+        # Escolhendo somente a fonte CascadiaCode
+        # EN: Choosing only the CascadiaCode font
+        if ( $fileName -match "CascadiaCode" ) {
+            Invoke-WebRequest -Uri $font -OutFile $fileName -UseBasicParsing
+            Expand-Archive -Path $fileName -DestinationPath ./fonts
+            
+            # Installando as fontes
+            # EN: Installing the fonts
+            $fonts = Get-ChildItem -Path ./fonts -Recurse -Filter "*.ttf"
+            ForEach ($font in $fonts) {
+                Write-Host "Installing $($font.Name)"
+                $fontPath = "$env:USERPROFILE\AppData\Local\Microsoft\Windows\Fonts\$($font.Name)"
+                Copy-Item -Path $font.FullName -Destination $fontPath
+            }
+            Remove-Item -Path ./fonts -Recurse -Force
+        }
+    }
 }
+
+
+function Main {
+    WingetInstaller
+    ApplyConfig
+    InstallPackages
+    InstallingNerdFonts
+}
+
+Main
