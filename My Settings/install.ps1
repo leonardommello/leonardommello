@@ -134,6 +134,12 @@ function WingetInstaller {
 
 function InstallingNerdFonts {
     try {
+        if (Test-Path "fonts") {
+            Remove-Item -Path fonts -Recurse -Force
+            ForEach ($font in Get-ChildItem -Path . -Filter "*.zip") {
+                Remove-Item -Path $font.FullName -Force
+            }
+        }
         Write-Host "Installing Nerd Fonts"
         New-Item -ItemType Directory -Path fonts -Force
         $URL = "https://api.github.com/repos/ryanoasis/nerd-fonts/releases/latest"
@@ -155,8 +161,8 @@ function InstallingNerdFonts {
                 # EN: Installing the fonts
                 $fonts = Get-ChildItem -Path fonts -Recurse -Filter "*.ttf"
                 ForEach ($font in $fonts) {
-                    Write-Host "Installing $($font.Name)"
-                    $fontPath = "$env:USERPROFILE\AppData\Local\Microsoft\Windows\Fonts\$($font.Name)"
+                    $fontPath = "C:\Windows\Fonts\"
+                    Write-Host "Installing $($font.Name) on $($fontPath)"
                     Copy-Item -Path $font.FullName -Destination $fontPath
                 }
                 Remove-Item -Path fonts -Recurse -Force
