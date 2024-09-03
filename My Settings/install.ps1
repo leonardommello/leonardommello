@@ -50,16 +50,32 @@ function InstallPackages {
 # Função que aplica configuração do perfil do PowerShell e Terminal do Windows usando symbolic link após fazer checkout do repositório
 # EN: Function that applies PowerShell and Windows Terminal profile configuration using symbolic link after checking out the repository
 function ApplyConfig {
+    # Checando a pasta do Windows Terminal
+    # EN: Checking the Windows Terminal folder
+    Write-Host "Checking Windows Terminal folder"
+    foreach ($folder in Get-ChildItem -Path "$env:USERPROFILE\AppData\Local\Packages" -Recurse -Directory) {
+        if ($folder.Name -match "Microsoft.WindowsTerminal") {
+            $terminalPath = $folder.FullName
+            break
+        }
+    }
+    # Deletando a pasta PowerShell do usuário
+    # EN: Deleting the user's PowerShell folder
+    Write-Host "Deleting user's PowerShell folder"
     if (!(Test-Path "$env:USERPROFILE\Documents\PowerShell")) {
         Remove-Item -Path "$env:USERPROFILE\Documents\PowerShell" -Recurse -Force
     }
-    if (!(Test-Path "$env:USERPROFILE\AppData\Local\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json")) {
-        Remove-Item -Path "$env:USERPROFILE\AppData\Local\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json"
+    # Deletando o arquivo settings.json do Windows Terminal
+    # EN: Deleting the Windows Terminal settings.json file
+    Write-Host "Deleting Windows Terminal settings.json file"
+    if (!(Test-Path "$env:USERPROFILE\AppData\Local\Packages\$terminalPath\LocalState\settings.json")) {
+        Remove-Item -Path "$env:USERPROFILE\AppData\Local\Packages\$terminalPath\LocalState\settings.json"
     }
     # Cria os links simbólicos
     # EN: Creates symbolic links
+    Write-Host "Creating symbolic links"
     New-Item -ItemType SymbolicLink -Path "$env:USERPROFILE\Documents\PowerShell" -Target "$PSScriptRoot\PowerShell"
-    New-Item -ItemType SymbolicLink -Path "$env:USERPROFILE\AppData\Local\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json" -Target "$PSScriptRoot\WindowsTerminal\settings.json"
+    New-Item -ItemType SymbolicLink -Path "$env:USERPROFILE\AppData\Local\Packages\$terminalPath\LocalState\settings.json" -Target "$PSScriptRoot\WindowsTerminal\settings.json"
 }
 
 
@@ -67,6 +83,7 @@ function ApplyConfig {
 # EN: Function that installs winget if it is not installed
 function WingetInstaller {
     if (!(Get-Command winget -ErrorAction SilentlyContinue)) {
+        Write-Host "Installing Winget"
         $URL = "https://api.github.com/repos/microsoft/winget-cli/releases/latest"
         $URL = (Invoke-WebRequest -Uri $URL).Content | ConvertFrom-Json |
         Select-Object -ExpandProperty "assets" |
@@ -90,6 +107,7 @@ function WingetInstaller {
 }
 
 function InstallingNerdFonts {
+    Write-Host "Installing Nerd Fonts"
     $URL = "https://api.github.com/repos/ryanoasis/nerd-fonts/releases/latest"
     $URL = (Invoke-WebRequest -Uri $URL).Content | ConvertFrom-Json |
     Select-Object -ExpandProperty "assets" |
@@ -100,6 +118,7 @@ function InstallingNerdFonts {
         $fileName = $font -split "/" | Select-Object -Last 1
         # Escolhendo somente a fonte CascadiaCode
         # EN: Choosing only the CascadiaCode font
+        # DISCLAIMER: I use CascadiaCode font, you can change download all fonts or change the font name
         if ( $fileName -match "CascadiaCode" ) {
             Invoke-WebRequest -Uri $font -OutFile $fileName -UseBasicParsing
             Expand-Archive -Path $fileName -DestinationPath ./fonts
