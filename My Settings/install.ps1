@@ -135,7 +135,7 @@ function WingetInstaller {
 function InstallingNerdFonts {
     try {
         Write-Host "Installing Nerd Fonts"
-        New-Item -ItemType Directory -Path fonts -Force
+        New-Item -ItemType Directory -Path ~/fonts -Force
         $URL = "https://api.github.com/repos/ryanoasis/nerd-fonts/releases/latest"
         $URL = (Invoke-WebRequest -Uri $URL).Content | ConvertFrom-Json |
         Select-Object -ExpandProperty "assets" |
@@ -149,17 +149,17 @@ function InstallingNerdFonts {
             # DISCLAIMER: I use CascadiaCode font, you can change download all fonts or change the font name
             if ( $fileName -match "CascadiaCode" ) {
                 Invoke-WebRequest -Uri $font -OutFile $fileName -UseBasicParsing
-                Expand-Archive -Path $fileName -DestinationPath fonts
+                Expand-Archive -Path $fileName -DestinationPath ~/fonts
                 
                 # Installando as fontes
                 # EN: Installing the fonts
-                $fonts = Get-ChildItem -Path fonts -Recurse -Filter "*.ttf"
+                $fonts = Get-ChildItem -Path ~/fonts -Recurse -Filter "*.ttf"
                 ForEach ($font in $fonts) {
                     Write-Host "Installing $($font.Name)"
                     $fontPath = "$env:USERPROFILE\AppData\Local\Microsoft\Windows\Fonts\$($font.Name)"
                     Copy-Item -Path $font.FullName -Destination $fontPath
                 }
-                Remove-Item -Path fonts -Recurse -Force
+                Remove-Item -Path ~/fonts -Recurse -Force
             }
         }
         Start-Sleep -Seconds 5
