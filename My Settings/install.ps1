@@ -7,8 +7,8 @@ if (!$isAdmin) {
 }
 
 #Variables 
-home = $env:USERPROFILE
-scriptPath = $PSScriptRoot
+$userHome = $env:USERPROFILE
+$scriptPath = $PSScriptRoot
 
 # Função que instala a lista de pacotes que eu uso no Windows
 # EN: Function that installs the list of packages I use on Windows
@@ -68,14 +68,17 @@ function ApplyConfig {
     # Deletando o arquivo settings.json do Windows Terminal
     # EN: Deleting the Windows Terminal settings.json file
     Write-Host "Deleting Windows Terminal settings.json file"
-    if (!(Test-Path "$env:USERPROFILE\AppData\Local\Packages\$terminalPath\LocalState\settings.json")) {
-        Remove-Item -Path "$env:USERPROFILE\AppData\Local\Packages\$terminalPath\LocalState\settings.json"
+    if (!(Test-Path "$terminalPath\LocalState\settings.json")) {
+        Remove-Item -Path "$terminalPath\LocalState\settings.json"
     }
     # Cria os links simbólicos
     # EN: Creates symbolic links
     Write-Host "Creating symbolic links"
-    New-Item -ItemType SymbolicLink -Path "$env:USERPROFILE\Documents\PowerShell" -Target "$PSScriptRoot\PowerShell"
-    New-Item -ItemType SymbolicLink -Path "$env:USERPROFILE\AppData\Local\Packages\$terminalPath\LocalState\settings.json" -Target "$PSScriptRoot\WindowsTerminal\settings.json"
+    New-Item -ItemType SymbolicLink -Path "$env:USERPROFILE\Documents\PowerShell" -Target "$scriptPath\PowerShell"
+    New-Item -ItemType SymbolicLink -Path "$terminalPath\LocalState\settings.json" -Target "$scriptPath\WindowsTerminal\settings.json"
+
+    # Wait 
+    Start-Sleep -Seconds 5
 }
 
 
