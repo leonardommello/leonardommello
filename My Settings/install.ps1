@@ -46,18 +46,21 @@ function InstallPackages {
             Write-Host "Installing $pkg"
             winget install -e -q $pkg
         }
+        Start-Sleep -Seconds 5
     }
     catch {
         Write-Host "An error occurred at line $($_.InvocationInfo.ScriptLineNumber): $($_.Exception.Message)"
+        return $false
     }
+    return $true
 }
 
 # Função que aplica configuração do perfil do PowerShell e Terminal do Windows usando symbolic link após fazer checkout do repositório
 # EN: Function that applies PowerShell and Windows Terminal profile configuration using symbolic link after checking out the repository
 function ApplyConfig {
     try {
-            # Checando a pasta do Windows Terminal
-    # EN: Checking the Windows Terminal folder
+        # Checando a pasta do Windows Terminal
+        # EN: Checking the Windows Terminal folder
         Write-Host "Checking Windows Terminal folder"
         foreach ($folder in Get-ChildItem -Path "$env:USERPROFILE\AppData\Local\Packages" -Recurse -Directory) {
             if ($folder.Name -match "Microsoft.WindowsTerminal") {
@@ -68,27 +71,29 @@ function ApplyConfig {
         # Deletando a pasta PowerShell do usuário
         # EN: Deleting the user's PowerShell folder
         Write-Host "Deleting user's PowerShell folder"
-        if (!(Test-Path "$env:USERPROFILE\Documents\PowerShell")) {
+        if (Test-Path "$env:USERPROFILE\Documents\PowerShell") {
             Remove-Item -Path "$env:USERPROFILE\Documents\PowerShell" -Recurse -Force
         }
         # Deletando o arquivo settings.json do Windows Terminal
         # EN: Deleting the Windows Terminal settings.json file
         Write-Host "Deleting Windows Terminal settings.json file"
-        if (!(Test-Path "$terminalPath\LocalState\settings.json")) {
+        if (Test-Path "$terminalPath\LocalState\settings.json") {
             Remove-Item -Path "$terminalPath\LocalState\settings.json"
         }
         # Cria os links simbólicos
         # EN: Creates symbolic links
         Write-Host "Creating symbolic links"
         New-Item -ItemType SymbolicLink -Path "$env:USERPROFILE\Documents\PowerShell" -Target "$scriptPath\PowerShell"
-        New-Item -ItemType SymbolicLink -Path "$terminalPath\LocalState\settings.json" -Target "$scriptPath\WindowsTerminal\settings.json"
+        New-Item -ItemType SymbolicLink -Path "$terminalPath\LocalState\settings.json" -Target "$scriptPath\Windows Terminal\settings.json"
 
         # Wait 
         Start-Sleep -Seconds 5
     }
     catch {
         Write-Host "An error occurred at line $($_.InvocationInfo.ScriptLineNumber): $($_.Exception.Message)"
+        return $false
     }
+    return $true
 }
 
 
@@ -112,16 +117,19 @@ function WingetInstaller {
             catch {
                 Write-Host "Winget failed to install, please install it manually"
                 Write-Host "https://github.com/microsoft/winget-cli/releases/"
-                exit
+                return $false
             }
         }
         else {
             Write-Host "Winget is already installed"
         }
+        Start-Sleep -Seconds 5
     }
     catch {
         Write-Host "An error occurred at line $($_.InvocationInfo.ScriptLineNumber): $($_.Exception.Message)"
+        return $false
     }
+    return $true
 }
 
 function InstallingNerdFonts {
@@ -135,6 +143,7 @@ function InstallingNerdFonts {
         #Saving name of the file and url at for loop
         ForEach ($font in $URL) {
             $fileName = $font -split "/" | Select-Object -Last 1
+            mkdir fonts -ErrorAction SilentlyContinue
             # Escolhendo somente a fonte CascadiaCode
             # EN: Choosing only the CascadiaCode font
             # DISCLAIMER: I use CascadiaCode font, you can change download all fonts or change the font name
@@ -153,18 +162,26 @@ function InstallingNerdFonts {
                 Remove-Item -Path ./fonts -Recurse -Force
             }
         }
+        Start-Sleep -Seconds 5
     }
     catch {
         Write-Host "An error occurred at line $($_.InvocationInfo.ScriptLineNumber): $($_.Exception.Message)"
+        return $false
     }
+    return $true
 }
 
 
 function Main {
-    WingetInstaller
-    ApplyConfig
-    InstallPackages
-    InstallingNerdFonts
+    try {
+        WingetInstaller
+        ApplyConfig
+        InstallPackages
+        InstallingNerdFonts
+    }
+    catch {
+        Write-Host "An error occurred at line $($_.InvocationInfo.ScriptLineNumber): $($_.Exception.Message)"
+    }
 }
 
 Main
