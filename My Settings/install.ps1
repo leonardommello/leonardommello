@@ -156,11 +156,12 @@ function WingetInstaller {
 }
 function InstallingNerdFonts {
     try {
-        if (Test-Path "fonts") {
-            Remove-Item -Path "fonts" -Recurse -Force
+        $defaultpath = "$scriptPath\fonts"
+        if (Test-Path "$defaultpath") {
+            Remove-Item -Path "$defaultpath" -Recurse -Force
         }
         Write-Host "Installing Nerd Fonts"
-        New-Item -ItemType Directory -Path "fonts" -Force
+        New-Item -ItemType Directory -Path "$defaultpath" -Force
         $URL = "https://api.github.com/repos/ryanoasis/nerd-fonts/releases/latest"
         $assets = (Invoke-WebRequest -Uri $URL).Content | ConvertFrom-Json | Select-Object -ExpandProperty "assets"
         
@@ -169,23 +170,14 @@ function InstallingNerdFonts {
             if ($fileName -match "CascadiaCode" -and $fileName -match "\.zip$") {
                 $downloadUrl = $asset.browser_download_url
                 Write-Host "Downloading $fileName"
-                Invoke-WebRequest -Uri $downloadUrl -OutFile "fonts\$fileName" -UseBasicParsing
-                Expand-Archive -Path "fonts\$fileName" -DestinationPath "fonts"
-                Remove-Item -Path "fonts\$fileName" -Force
+                Invoke-WebRequest -Uri $downloadUrl -OutFile "$defaultpath\$fileName" -UseBasicParsing
+                Expand-Archive -Path "$defaultpath\$fileName" -DestinationPath "$defaultpath"
+                Remove-Item -Path "$defaultpath\$fileName" -Force
             }
         }
 
-        # Installando as fontes
-        # EN: Installing the fonts
-        $fonts = Get-ChildItem -Path "fonts" -Recurse -Filter "*.ttf"
-        foreach ($font in $fonts) {
-            $fontPath = $font.FullName
-            Write-Host "Installing $fontPath"
-            Copy-Item -Path $fontPath -Destination "$env:windir\Fonts"
-        }
-
         # Open Windows Explorer to the fonts directory
-        explorer.exe "$PSScriptRoot\fonts"
+        explorer.exe "$defaultpath"
         Start-Sleep -Seconds 5
     }
     catch {
