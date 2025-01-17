@@ -45,7 +45,7 @@ function InstallPackages {
 
         foreach ($pkg in $pkgList) {
             Write-Host "Installing $pkg"
-            winget install -e -q $pkg  --scope alluser
+            winget install -e -q $pkg  --scope machine
         }
         Start-Sleep -Seconds 5
     }
@@ -166,7 +166,7 @@ function InstallingNerdFonts {
         
         foreach ($asset in $assets) {
             $fileName = $asset.name
-            if ($fileName -match "CascadiaCode") {
+            if ($fileName -match "CascadiaCode" -and $fileName -match "\.zip$") {
                 $downloadUrl = $asset.browser_download_url
                 Write-Host "Downloading $fileName"
                 Invoke-WebRequest -Uri $downloadUrl -OutFile "fonts\$fileName" -UseBasicParsing
