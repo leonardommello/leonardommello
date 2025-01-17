@@ -45,7 +45,7 @@ function InstallPackages {
 
         foreach ($pkg in $pkgList) {
             Write-Host "Installing $pkg"
-            winget install -e -q $pkg
+            winget install -e -q $pkg  --scope alluser
         }
         Start-Sleep -Seconds 5
     }
