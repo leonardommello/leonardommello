@@ -154,38 +154,36 @@ function WingetInstaller {
     }
     return $true
 }
-
 function InstallingNerdFonts {
     try {
         if (Test-Path "fonts") {
             Remove-Item -Path "fonts" -Recurse -Force
-            ForEach ($font in Get-ChildItem -Path . -Filter "*.zip") {
-                Remove-Item -Path $font.FullName -Force
-            }
         }
         Write-Host "Installing Nerd Fonts"
         New-Item -ItemType Directory -Path "fonts" -Force
         $URL = "https://api.github.com/repos/ryanoasis/nerd-fonts/releases/latest"
-        $URL = (Invoke-WebRequest -Uri $URL).Content | ConvertFrom-Json |
-        Select-Object -ExpandProperty "assets" |
-        Where-Object "browser_download_url" -Match '.zip' |
-        Select-Object -ExpandProperty "browser_download_url"
-        #Saving name of the file and url at for loop
-        ForEach ($font in $URL) {
-            $fileName = $font -split "/" | Select-Object -Last 1
-            # Escolhendo somente a fonte CascadiaCode
-            # EN: Choosing only the CascadiaCode font
-            # DISCLAIMER: I use CascadiaCode font, you can change download all fonts or change the font name
-            $fontName = "CaskaydiaCove Nerd Font"
-            if ( $fileName -match "CascadiaCode" ) {
-                Invoke-WebRequest -Uri $font -OutFile $fileName -UseBasicParsing
-                Expand-Archive -Path $fileName -DestinationPath "fonts"
-                
-                # Installando as fontes
-                # EN: Installing the fonts
-                $fonts = Get-ChildItem -Path fonts -Recurse -Filter "*.ttf"
+        $assets = (Invoke-WebRequest -Uri $URL).Content | ConvertFrom-Json | Select-Object -ExpandProperty "assets"
+        
+        foreach ($asset in $assets) {
+            $fileName = $asset.name
+            if ($fileName -match "CascadiaCode") {
+                $downloadUrl = $asset.browser_download_url
+                Write-Host "Downloading $fileName"
+                Invoke-WebRequest -Uri $downloadUrl -OutFile "fonts\$fileName" -UseBasicParsing
+                Expand-Archive -Path "fonts\$fileName" -DestinationPath "fonts"
+                Remove-Item -Path "fonts\$fileName" -Force
             }
         }
+
+        # Installando as fontes
+        # EN: Installing the fonts
+        $fonts = Get-ChildItem -Path "fonts" -Recurse -Filter "*.ttf"
+        foreach ($font in $fonts) {
+            $fontPath = $font.FullName
+            Write-Host "Installing $fontPath"
+            Copy-Item -Path $fontPath -Destination "$env:windir\Fonts"
+        }
+
         # Open Windows Explorer to the fonts directory
         explorer.exe "$PSScriptRoot\fonts"
         Start-Sleep -Seconds 5
