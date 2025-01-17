@@ -8,22 +8,24 @@ if (!$isAdmin) {
 
 #Variables 
 $userHome = $env:USERPROFILE
+$installPath = "$userHome\My Settings"
 $scriptPath = $PSScriptRoot
+
 
 # Função que instala a lista de pacotes que eu uso no Windows
 # EN: Function that installs the list of packages I use on Windows
 function InstallPackages {
     try {
         $pkgList = @(
-            "Fork.Fork"
             "Git.Git"
             "GitHub.GitLFS"
-            "suse.RancherDesktop"
+            "Docker.DockerDesktop"
             "Microsoft.WindowsTerminal"
             "Microsoft.PowerShell"
             "Microsoft.PowerToys"
             "Microsoft.VisualStudioCode"
             "TheBrowserCompany.Arc"
+            "Google.Chrome"
             "Foxit.FoxitReader"
             "7zip.7zip"
             "Canonical.Ubuntu.2204"
@@ -34,7 +36,6 @@ function InstallPackages {
             "Microsoft.DotNet.Runtime.8"
             "JanDeDobbeleer.OhMyPosh"
             "Amazon.AWSCLI"
-            "KaiKramer.KeyStoreExplorer"
             "WinSCP.WinSCP"
             "Obsidian.Obsidian"
             "Python.Launcher"
@@ -80,11 +81,18 @@ function ApplyConfig {
         if (Test-Path "$terminalPath\LocalState\settings.json") {
             Remove-Item -Path "$terminalPath\LocalState\settings.json"
         }
+
+        # Clona arquivos para uma pasta dentro do diretório do usuário
+        # EN: Clone files to a folder inside the user directory
+        Write-Host "Cloning files to a folder inside the user directory"
+        Copy-Item -Path "$scriptPath\PowerShell" -Destination "$installPath" -Recurse -Force
+        Copy-Item -Path "$scriptPath\Windows Terminal\settings.json" -Destination "$installPath" -Force
+
         # Cria os links simbólicos
         # EN: Creates symbolic links
         Write-Host "Creating symbolic links"
-        New-Item -ItemType SymbolicLink -Path "$env:USERPROFILE\Documents\PowerShell" -Target "$scriptPath\PowerShell"
-        New-Item -ItemType SymbolicLink -Path "$terminalPath\LocalState\settings.json" -Target "$scriptPath\Windows Terminal\settings.json"
+        New-Item -ItemType SymbolicLink -Path "$env:USERPROFILE\Documents\PowerShell" -Target "$installPath\PowerShell"
+        New-Item -ItemType SymbolicLink -Path "$terminalPath\LocalState\settings.json" -Target "$installPath\Windows Terminal\settings.json"
 
         # Wait 
         Start-Sleep -Seconds 5
@@ -166,6 +174,7 @@ function InstallingNerdFonts {
                     Copy-Item -Path $font.FullName -Destination $fontPath
                 }
                 Remove-Item -Path fonts -Recurse -Force
+                Remove-Item -Path $fileName
             }
         }
         Start-Sleep -Seconds 5
