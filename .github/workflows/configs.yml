@@ -16,6 +16,13 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
+    - name: Delete existing release
+      if: github.event_name == 'push'
+      run: |
+        gh release delete ${{ github.ref_name }} -y
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
     - name: Create release
       id: create_release
       uses: actions/create-release@v1
