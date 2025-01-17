@@ -85,8 +85,8 @@ function ApplyConfig {
         # Clona arquivos para uma pasta dentro do diretório do usuário
         # EN: Clone files to a folder inside the user directory
         Write-Host "Cloning files to a folder inside the user directory"
-        Copy-Item -Path "$scriptPath\PowerShell" -Destination "$installPath" -Recurse -Force
-        Copy-Item -Path "$scriptPath\Windows Terminal\settings.json" -Destination "$installPath" -Force
+        Copy-Item -Path "$scriptPath\PowerShell" -Destination "$installPath\PowerShell" -Recurse -Force
+        Copy-Item -Path "$scriptPath\Windows Terminal\settings.json" -Destination "$installPath\Windows Terminal\settings.json" -Force
 
         # Cria os links simbólicos
         # EN: Creates symbolic links
