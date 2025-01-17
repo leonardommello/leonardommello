@@ -184,15 +184,10 @@ function InstallingNerdFonts {
                 # Installando as fontes
                 # EN: Installing the fonts
                 $fonts = Get-ChildItem -Path fonts -Recurse -Filter "*.ttf"
-                ForEach ($font in $fonts) {
-                    $fontPath = "C:\Windows\Fonts\$fontName"
-                    Write-Host "Installing $($font.Name) on $($fontPath)"
-                    Copy-Item -Path $font.FullName -Destination $fontPath
-                }
-                Remove-Item -Path fonts -Recurse -Force
-                Remove-Item -Path $fileName
             }
         }
+        # Open Windows Explorer to the fonts directory
+        explorer.exe "$PSScriptRoot\fonts"
         Start-Sleep -Seconds 5
     }
     catch {
