@@ -158,13 +158,13 @@ function WingetInstaller {
 function InstallingNerdFonts {
     try {
         if (Test-Path "fonts") {
-            Remove-Item -Path fonts -Recurse -Force
+            Remove-Item -Path "fonts" -Recurse -Force
             ForEach ($font in Get-ChildItem -Path . -Filter "*.zip") {
                 Remove-Item -Path $font.FullName -Force
             }
         }
         Write-Host "Installing Nerd Fonts"
-        New-Item -ItemType Directory -Path fonts -Force
+        New-Item -ItemType Directory -Path "fonts" -Force
         $URL = "https://api.github.com/repos/ryanoasis/nerd-fonts/releases/latest"
         $URL = (Invoke-WebRequest -Uri $URL).Content | ConvertFrom-Json |
         Select-Object -ExpandProperty "assets" |
@@ -179,7 +179,7 @@ function InstallingNerdFonts {
             $fontName = "CaskaydiaCove Nerd Font"
             if ( $fileName -match "CascadiaCode" ) {
                 Invoke-WebRequest -Uri $font -OutFile $fileName -UseBasicParsing
-                Expand-Archive -Path $fileName -DestinationPath fonts
+                Expand-Archive -Path $fileName -DestinationPath "fonts"
                 
                 # Installando as fontes
                 # EN: Installing the fonts
