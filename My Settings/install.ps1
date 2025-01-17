@@ -104,6 +104,11 @@ function ApplyConfig {
         New-Item -ItemType SymbolicLink -Path "$env:USERPROFILE\Documents\PowerShell" -Target "$installPath\PowerShell"
         New-Item -ItemType SymbolicLink -Path "$terminalPath\LocalState\settings.json" -Target "$installPath\Windows Terminal\settings.json"
 
+        # Desbloqueando o script de configuração
+        # EN: Unlocking the configuration script
+        Write-Host "Unlocking the configuration script"
+        Unblock-File -Path "$installPath\PowerShell\Microsoft.PowerShell_profile.ps1"
+
         # Wait 
         Start-Sleep -Seconds 5
     }
@@ -171,6 +176,7 @@ function InstallingNerdFonts {
             # Escolhendo somente a fonte CascadiaCode
             # EN: Choosing only the CascadiaCode font
             # DISCLAIMER: I use CascadiaCode font, you can change download all fonts or change the font name
+            $fontName = "CaskaydiaCove Nerd Font"
             if ( $fileName -match "CascadiaCode" ) {
                 Invoke-WebRequest -Uri $font -OutFile $fileName -UseBasicParsing
                 Expand-Archive -Path $fileName -DestinationPath fonts
@@ -179,7 +185,7 @@ function InstallingNerdFonts {
                 # EN: Installing the fonts
                 $fonts = Get-ChildItem -Path fonts -Recurse -Filter "*.ttf"
                 ForEach ($font in $fonts) {
-                    $fontPath = "C:\Windows\Fonts\"
+                    $fontPath = "C:\Windows\Fonts\$fontName"
                     Write-Host "Installing $($font.Name) on $($fontPath)"
                     Copy-Item -Path $font.FullName -Destination $fontPath
                 }
