@@ -82,11 +82,21 @@ function ApplyConfig {
             Remove-Item -Path "$terminalPath\LocalState\settings.json"
         }
 
+        # Deletando a pasta PowerShell e Windows Terminal do diretório de instalação
+        # EN: Deleting the PowerShell and Windows Terminal folder from the installation directory
+        Write-Host "Deleting PowerShell and Windows Terminal folder from the installation directory"
+        if (Test-Path "$installPath\PowerShell") {
+            Remove-Item -Path "$installPath\PowerShell" -Recurse -Force
+        }
+        if (Test-Path "$installPath\Windows Terminal") {
+            Remove-Item -Path "$installPath\Windows Terminal" -Recurse -Force
+        }
+
         # Clona arquivos para uma pasta dentro do diretório do usuário
         # EN: Clone files to a folder inside the user directory
         Write-Host "Cloning files to a folder inside the user directory"
         Copy-Item -Path "$scriptPath\PowerShell" -Destination "$installPath\PowerShell" -Recurse -Force
-        Copy-Item -Path "$scriptPath\Windows Terminal\settings.json" -Destination "$installPath\Windows Terminal\settings.json" -Force
+        Copy-Item -Path "$scriptPath\Windows Terminal" -Destination "$installPath\Windows Terminal" -Recurse -Force
 
         # Cria os links simbólicos
         # EN: Creates symbolic links
@@ -189,13 +199,43 @@ function InstallingNerdFonts {
 
 function Main {
     try {
-        # Set execution script path
-        Set-Location $scriptPath
-        # Running functions
-        WingetInstaller
-        ApplyConfig
-        InstallPackages
-        InstallingNerdFonts
+        # Menu de opções
+        # EN: Options menu
+        Write-Host "1 - Install Packages"
+        Write-Host "2 - Apply Config"
+        Write-Host "3 - Install Winget"
+        Write-Host "4 - Installing Nerd Fonts"
+        Write-Host "5 - Install All"
+        Write-Host "6 - Exit"
+        $option = Read-Host "Choose an option"
+
+        switch ($option) {
+            1 {
+                InstallPackages
+            }
+            2 {
+                ApplyConfig
+            }
+            3 {
+                WingetInstaller
+            }
+            4 {
+                InstallingNerdFonts
+            }
+            5 {
+                InstallPackages
+                ApplyConfig
+                WingetInstaller
+                InstallingNerdFonts
+            }
+            6 {
+                Write-Host "Exiting..."
+                exit
+            }
+            default {
+                Write-Host "Invalid option"
+            }
+        }
     }
     catch {
         Write-Host "An error occurred at line $($_.InvocationInfo.ScriptLineNumber): $($_.Exception.Message)"
